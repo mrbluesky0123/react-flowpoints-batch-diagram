@@ -37,7 +37,7 @@ export function MainLibrary() {
       background: 'white',
       variant: 'outlined',
       drawerOpen: false,
-      drawerWidth: 360,
+      drawerWidth: 10,
       showShape: false,
       showName: false,
       snap: true,

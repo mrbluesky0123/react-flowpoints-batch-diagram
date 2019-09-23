@@ -299,6 +299,21 @@ class App extends Component{
 
   }
 
+  getNode = (nodes, targetName) => {
+
+		for(var i = 0; i < nodes.length; i++){
+
+			if(nodes[i].name == targetName){
+				return nodes[i];
+			}
+			else{
+				continue;
+			}	
+		}
+		return null;
+
+	}
+
   getBatchList = () => {
 		return axios.get('http://198.13.47.188:8080/graph/BTPBATCH001');
 	}
@@ -336,14 +351,15 @@ class App extends Component{
         x: posX,
         y: posY
       },
-      content: this.getEmptyFlowpointContent(base_ref)
+      // content: this.getEmptyFlowpointContent(base_ref)
     }
 
     // Adding flowpoint
-    flowpoints['' + settings.count] = newPoint;
+    // flowpoints['' + settings.count] = newPoint;
+    flowpoints[name] = newPoint;
 
     // Connecting previously selected flowpoint to this one (maybe)
-    if (settings.selected) flowpoints[settings.selected].outputs['' + settings.count] = {}
+    // if (settings.selected) flowpoints[settings.selected].outputs['' + settings.count] = {}
 
     // Updating settings
     settings.selected = '' + settings.count
@@ -445,33 +461,34 @@ class App extends Component{
     var settings = this.state.settings;
 
     // Handling click
-    if (e.shiftKey) {
-      // If shift is pressed: Create / delete connection
-      if (settings.selected === null) {
-        // Nothing selected: selecting current
-        settings.selected = key;
-      } else {
-        if (settings.selected !== key) {
-          // Creating connection from previously clicked to current clicked
-          var pointA = flowpoints[settings.selected]
-          if (key in pointA.outputs) {
-            delete pointA.outputs[key]
-          } else {
-            pointA.outputs[key] = {}
-          }
-          this.updateCode()
-        }
-      }
-    } else {
-      // If not shift pressed: Select / deselect flowpoint
-      settings.selected = (settings.selected === null ? key : (settings.selected == key ? null : key))
-    }
+    // if (e.shiftKey) {
+    //   // If shift is pressed: Create / delete connection
+    //   if (settings.selected === null) {
+    //     // Nothing selected: selecting current
+    //     settings.selected = key;
+    //   } else {
+    //     if (settings.selected !== key) {
+    //       // Creating connection from previously clicked to current clicked
+    //       var pointA = flowpoints[settings.selected]
+    //       if (key in pointA.outputs) {
+    //         delete pointA.outputs[key]
+    //       } else {
+    //         pointA.outputs[key] = {}
+    //       }
+    //       this.updateCode()
+    //     }
+    //   }
+    // } else {
+    //   // If not shift pressed: Select / deselect flowpoint
+    //   settings.selected = (settings.selected === null ? key : (settings.selected == key ? null : key))
+    // }
 
     // Updating state
-    this.setState({
-      flowpoints,
-      settings
-    })
+    // this.setState({
+    //   flowpoints,
+    //   settings
+    // })
+    this.showHideHelp()
 
   }
 
@@ -481,12 +498,27 @@ class App extends Component{
     var aaa = 'Unloaded';
     if(this.state.data != null){
       // aaa = JSON.stringify(this.state.data.batchNodes);
-      console.log(aaa)
+      console.log(aaa);
+      var nodes = this.state.flowpoints;
 			let batchNodes = this.state.data.batchNodes;
 			for(var k = 0; k < batchNodes.length; k++) {
 
 				// console.log('aaasadasdasadw222222aa: ' + batchNodes[k].batchId);
         this.addFlowpoint(batchNodes[k].batchId, batchNodes[k].posX, batchNodes[k].posY);
+      }
+
+      for(var i = 0; i < batchNodes.length; i++){
+				// const port1 = node1.addPort(new DefaultPortModel(false, 'out-1', 'next'));	
+        console.log("wwwww")
+        var currentNode = batchNodes[i].batchId;
+				var nexts = batchNodes[i].next;
+				for(var j = 0; j < nexts.length; j++){
+					nodes[currentNode].outputs[nexts[j]] = {}
+					
+					console.log('QQ: ' + currentNode);
+					
+				}	
+				
 			}
     }
     return (
@@ -525,7 +557,7 @@ class App extends Component{
                   outputs={point.outputs}
                   onClick={e => {this.handleClick(key, e)}}
                   startPosition={point.pos}
-                  snap={{x:10, y:10}}
+                  snap={{x:20, y:20}}
                   style={{
                     width:'auto',
                     height:'auto',
@@ -537,8 +569,9 @@ class App extends Component{
                     var settings = this.state.settings;
                     flowpoints[key].pos = pos;
                     settings.lastPos = pos;
-                    this.setState({flowpoints, settings})
-                  }}>
+                    // this.setState({flowpoints, settings})
+                  }}
+                  >
                   <div style={{height:'auto', paddingLeft:4, paddingRight:4}}>
                       <div style={{display:'table', width:'100%', height:'50px'}}>
                         <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center'}}>
