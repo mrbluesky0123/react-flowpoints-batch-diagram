@@ -400,9 +400,10 @@ class App extends Component{
   }
 
 
-  showHideHelp() {
+  showHideHelp(key) {
     var visual = this.state.visual;
     visual.show_help_dialog = !visual.show_help_dialog;
+    visual.show_batch_name = key;
     this.setState({visual})
   }
 
@@ -488,7 +489,7 @@ class App extends Component{
     //   flowpoints,
     //   settings
     // })
-    this.showHideHelp()
+    this.showHideHelp(key);
 
   }
 
@@ -633,6 +634,7 @@ class App extends Component{
 
         <HelpDialog
           open={this.state.visual.show_help_dialog}
+          batchName = {this.state.visual.show_batch_name}
           onClose={() => {
             var visual = this.state.visual;
             visual.show_help_dialog = false;

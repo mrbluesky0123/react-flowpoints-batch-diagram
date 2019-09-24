@@ -44,7 +44,8 @@ export function MainLibrary() {
       show_load_dialog: false,
       load_dialog_error: false,
       show_save_dialog: false,
-      show_help_dialog: false
+      show_help_dialog: false,
+      show_batch_name: null
     },
     settings: {
       tab: 'Misc',

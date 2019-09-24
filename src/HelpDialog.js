@@ -1,19 +1,46 @@
 import React from 'react';
 import { Typography, Dialog, DialogTitle, DialogContentText, DialogContent, ExpansionPanel, ExpansionPanelSummary, Stepper, StepContent, StepLabel, Step, Link } from "@material-ui/core";
-
+import axios from 'axios';
 
 export class HelpDialog extends React.Component{
   constructor(props) {
     super(props);
-    this.state = { step:0 }
+    this.state = { step:0, batchData:null }
     this.goTo = this.goTo.bind(this);
+    console.log("fetled. : " + this.props.batchName);
+    
   }
 
+  getBatch = (batchName) => {
+		return axios.get('http://198.13.47.188:8080/bo/' + batchName);
+	}
+	
+	getBoBatch = async (batchName) => {
+		console.log("fetchBatch() is called. : " + batchName);
+		const response = await this.getBatch(batchName);
+		this.setState({
+			...this.state,
+			batchData: response.data,
+		});
+		console.log("qqqq123123qq : " + (this.state.batchData).toString());
+  }
+  
   goTo(idx) {
     this.setState({ step:idx })
   }
 
   render() {
+    var batchData = null;
+    var batchName = 'Unloaded';
+    if(this.props.batchName !== null){
+      this.getBoBatch(this.props.batchName);
+      if(this.state.batchData !== null){
+        batchData = this.state.batchData;
+        batchName = batchData['batchJobs']['batchJobId'];
+        this.props.batchName = null;
+      }
+
+    }
     return (
       <Dialog
         open={this.props.open}
@@ -21,8 +48,8 @@ export class HelpDialog extends React.Component{
         fullWidth
         maxWidth='sm'
         style={{maxHeight:'90vh', height:'auto'}}>
-
-        <DialogTitle>Getting started</DialogTitle>
+{/* (this.state.data)['batchJobs']['batchJobId']['batchId'] */}
+        <DialogTitle>{batchName}</DialogTitle>
 
         <div style={{overflow:'scroll', width:'100%'}}>
 
