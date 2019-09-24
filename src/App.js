@@ -513,7 +513,11 @@ class App extends Component{
         var currentNode = batchNodes[i].batchId;
 				var nexts = batchNodes[i].next;
 				for(var j = 0; j < nexts.length; j++){
-					nodes[currentNode].outputs[nexts[j]] = {}
+					nodes[currentNode].outputs[nexts[j]] = {
+            outputColor:"#767676",
+            inputColor:"#292929",
+            width: 3
+          }
 					
 					console.log('QQ: ' + currentNode);
 					
@@ -533,12 +537,12 @@ class App extends Component{
           avoidCollisions
           onClick={() => {
             
-            // Loading from state
-            var settings = this.state.settings;
-            settings.selected = null;
+            // // Loading from state
+            // var settings = this.state.settings;
+            // settings.selected = null;
 
-            // Updating state
-            this.setState({settings})
+            // // Updating state
+            // this.setState({settings})
 
           }}
           style={{
@@ -555,14 +559,17 @@ class App extends Component{
                 <Flowpoint
                   key={key}
                   outputs={point.outputs}
-                  onClick={e => {this.handleClick(key, e)}}
+                  onClick={e => {this.handleClick(key, e)}}                  
                   startPosition={point.pos}
-                  snap={{x:20, y:20}}
+                  snap={{x:10, y:10}}
                   style={{
-                    width:'auto',
-                    height:'auto',
+                    width:'150',
+                    height:'30',
                     minWidth:150,
-                    maxHeight: (this.state.visual.showShape && this.state.environment.library in this.state.environment.autoparams) ? 150 : 50
+                    maxHeight: (this.state.visual.showShape && this.state.environment.library in this.state.environment.autoparams) ? 150 : 50,
+                    backgroundColor:'#FFFAE8',
+                    color:'black',
+                    borderColor: '#494949'
                   }}
                   onDrag={pos => {
                     var flowpoints = this.state.flowpoints;
@@ -601,7 +608,7 @@ class App extends Component{
           showHideHelp={this.showHideHelp}/> */}
         
 
-        <Snackbar
+        {/* <Snackbar
           autoHideDuration={4000}
           onClose={() => {
             var notification = this.state.notification;
@@ -621,7 +628,7 @@ class App extends Component{
           <SnackbarContent
             message={this.state.notification.content.msg}
             style={{backgroundColor:this.state.notification.content.color, boxShadow:'none'}}/>
-        </Snackbar>
+        </Snackbar> */}
 
 
         <HelpDialog
@@ -633,7 +640,7 @@ class App extends Component{
           }}/>
 
         
-        <LoadDialog
+        {/* <LoadDialog
           error={this.state.visual.load_dialog_error}
           open={this.state.visual.show_load_dialog}
           onClose={() => {
@@ -690,7 +697,7 @@ class App extends Component{
               this.showNotification('Model saved and link copied to clip-board')
 
             })
-          }}/>
+          }}/> */}
       
 
       </div>

@@ -33,8 +33,8 @@ export function MainLibrary() {
     },
     visual: {
       darkTheme: false,
-      theme: 'indigo',
-      background: 'white',
+      theme: 'black',
+      background: 'black',
       variant: 'outlined',
       drawerOpen: false,
       drawerWidth: 10,
