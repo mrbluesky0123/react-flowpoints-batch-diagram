@@ -7,6 +7,7 @@ export function MainLibrary() {
   return {
     // newly added
     data: null,
+    batchName: null,
     flowpoints: {},
     environment: {
       getBaseLibrary: getBaseLibrary,

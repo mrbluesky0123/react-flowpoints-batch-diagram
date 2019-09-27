@@ -7,8 +7,7 @@ export class HelpDialog extends React.Component{
     super(props);
     this.state = { step:0, batchData:null }
     this.goTo = this.goTo.bind(this);
-    console.log("fetled. : " + this.props.batchName);
-    
+    console.log("fetasdled. : " + this.state.dummy);
   }
 
   getBatch = (batchName) => {
@@ -30,17 +29,16 @@ export class HelpDialog extends React.Component{
   }
 
   render() {
-    var batchData = null;
-    var batchName = 'Unloaded';
-    if(this.props.batchName !== null){
-      this.getBoBatch(this.props.batchName);
-      if(this.state.batchData !== null){
-        batchData = this.state.batchData;
-        batchName = batchData['batchJobs']['batchJobId'];
-        this.props.batchName = null;
-      }
+    var batchName = this.state.batchName;
+    var loaded = 0;
+    console.log("FUCK#### " + batchName);
+    
 
+    if(this.state.batchData !== null){
+      console.log("FUCK###asdasdasd# " + batchName);
+      batchName = this.state.batchData['batchJobs']['batchJobId']['batchId'];
     }
+        
     return (
       <Dialog
         open={this.props.open}
@@ -49,7 +47,7 @@ export class HelpDialog extends React.Component{
         maxWidth='sm'
         style={{maxHeight:'90vh', height:'auto'}}>
 {/* (this.state.data)['batchJobs']['batchJobId']['batchId'] */}
-        <DialogTitle>{batchName}</DialogTitle>
+        <DialogTitle>{this.state.batchName === null ? 'Unloaded' : this.state.batchName}</DialogTitle>
 
         <div style={{overflow:'scroll', width:'100%'}}>
 
